@@ -15,7 +15,7 @@ def rename_latest(access_token):
     r = requests.get('https://www.strava.com/api/v3/athlete/activities', params={'per_page': 1}, headers={'Authorization': f'Bearer {access_token}'})
     act = r.json()[0]
     act_id = act['id']
-    start = datetime.datetime.fromisoformat(act['start_date_local'])
+    start = datetime.datetime.fromisoformat(act['start_date_local'].replace('Z', ''))
     date_str = start.strftime('%Y-%m-%d')
     new_name = f"{date_str} Evening Ride"
     requests.put(f'https://www.strava.com/api/v3/activities/{act_id}', headers={'Authorization': f'Bearer {access_token}'}, data={'name': new_name})
