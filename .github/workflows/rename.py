@@ -17,7 +17,17 @@ def rename_latest(access_token):
     act_id = act['id']
     start = datetime.datetime.fromisoformat(act['start_date_local'])
     date_str = start.strftime('%Y-%m-%d')
-    new_name = f"{date_str} Evening Ride"
+    hour = start.hour
+if hour < 6:
+    time_label = "Night Ride"
+elif hour < 12:
+    time_label = "Morning Ride"
+elif hour < 17:
+    time_label = "Afternoon Ride"
+else:
+    time_label = "Evening Ride"
+
+new_name = f"{date_str} {time_label}"
     requests.put(f'https://www.strava.com/api/v3/activities/{act_id}', headers={'Authorization': f'Bearer {access_token}'}, data={'name': new_name})
     print("✅ Renamed to", new_name)
 
